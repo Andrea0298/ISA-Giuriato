@@ -176,6 +176,9 @@ class TestGeneticAlgorithmProperty(unittest.TestCase):
 
     @given(st.lists(st.lists(st.integers(), min_size=2, unique=True), min_size=2))
     def test_evolve_population_property(self, population):
+        
+        elite_size = 20
+        mutation_rate = 0.01
         albergo = MagicMock()
         tempo_restante = MagicMock()
         orario = MagicMock()
