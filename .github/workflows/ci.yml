@@ -31,6 +31,7 @@ jobs:
         pytest Algoritmogenetico/tests --maxfail=1 --disable-warnings
 
   deploy:
+    needs: test  # Il job di deploy si avvia solo se il test job ha successo
     runs-on: ubuntu-latest
 
     steps:
