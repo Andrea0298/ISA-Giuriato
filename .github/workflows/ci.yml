@@ -1,6 +1,5 @@
-name: CI Pipeline
+name: CI/CD Pipeline
 
-# Quando eseguire il workflow
 on:
   push:
     branches:
@@ -9,31 +8,44 @@ on:
     branches:
       - main
 
-# Definizione dei jobs
 jobs:
   test:
-    # Il job viene eseguito su una macchina Ubuntu
     runs-on: ubuntu-latest
 
-    # Passaggi del job
     steps:
-      # Checkout del codice dal repository
-      - name: Checkout code
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      # Set up Python
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.12.4'  
-      # Installazione delle dipendenze
-      - name: Install dependencies
-        run: |
-          pip install --upgrade pip
-          pip install -r Algoritmogenetico/requirements.txt
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12.4'
 
-      # Esecuzione dei test
-      - name: Run tests
-        run: |
-          pytest Algoritmogenetico/tests --maxfail=1 --disable-warnings
+    - name: Install dependencies
+      run: |
+        pip install --upgrade pip
+        pip install -r Algoritmogenetico/requirements.txt
 
+    - name: Run tests
+      run: |
+        pytest Algoritmogenetico/tests --maxfail=1 --disable-warnings
+
+  deploy:
+    needs: test  # Il job di deploy si avvia solo se il test job ha successo
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Deploy to Server
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      run: |
+        echo "${SSH_PRIVATE_KEY}" > ssh_key
+        chmod 600 ssh_key
+        rsync -avz -e "ssh -i ssh_key -o StrictHostKeyChecking=no" Algoritmogenetico/ user@server:/path/to/deployment/
+        ssh -i ssh_key -o StrictHostKeyChecking=no user@server "cd /path/to/deployment && pip install -r requirements.txt && systemctl restart myapp"
+
+    - name: Clean up
+      run: rm ssh_key
