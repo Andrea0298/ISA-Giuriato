@@ -1,0 +1,39 @@
+name: CI Pipeline
+
+# Quando eseguire il workflow
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+# Definizione dei jobs
+jobs:
+  test:
+    # Il job viene eseguito su una macchina Ubuntu
+    runs-on: ubuntu-latest
+
+    # Passaggi del job
+    steps:
+      # Checkout del codice dal repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12.4'  
+      # Installazione delle dipendenze
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r Algoritmogenetico/requirements.txt
+
+      # Esecuzione dei test
+      - name: Run tests
+        run: |
+          pytest Algoritmogenetico/tests --maxfail=1 --disable-warnings
+

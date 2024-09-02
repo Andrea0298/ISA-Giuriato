@@ -48,3 +48,5 @@ def test_genetic_algorithm(setup_data):
     # Controlla che il gradimento sia positivo
     assert best_tour[0] >= 0
 
+if __name__ == '__main__':
+    pytest.main()
