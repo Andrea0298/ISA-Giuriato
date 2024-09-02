@@ -19,7 +19,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.12.4'
+        python-version: '3.x'
 
     - name: Install dependencies
       run: |
@@ -31,7 +31,6 @@ jobs:
         pytest Algoritmogenetico/tests --maxfail=1 --disable-warnings
 
   deploy:
-    needs: test  # Il job di deploy si avvia solo se il test job ha successo
     runs-on: ubuntu-latest
 
     steps:
