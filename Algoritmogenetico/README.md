@@ -9,6 +9,9 @@ Questo progetto implementa un algoritmo genetico che ha lo scopo di ottimizzare 
 - `src/init_Params.py`: Gestione dei parametri iniziali per l'algoritmo specificando attrazioni visitabili e possibili hotel.
 - `src/main.py`: File principale per eseguire l'algoritmo.
 - `src/orologio.py`: Gestione del tempo nel contesto del tour.
+- `tests/test_Algoritmo_Genetico.py`: Insieme dei test unitari per le funzioni dell' algoritmo genetico
+- `tests/test_Greedy_Lib.py`: Insieme dei test unitari Sulla Greedy che inizializza l'algoritmo
+- `tests/integration_test_Algoritmo_Genetico.py`: Test di integarazione per l'algoritmo genetico
 
 ## Esecuzione del Progetto
 
